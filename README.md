@@ -1,15 +1,15 @@
-# Hyperfy ⚡️
+# MemexCorp ⚡️
 
 <div align="center">
-  <img src="overview.png" alt="Hyperfy Ecosystem" width="100%" />
+  <img src="overview.png" alt="MemexCorp Ecosystem" width="100%" />
   <p>
     <strong>Build, deploy, and experience interactive 3D virtual worlds</strong>
   </p>
 </div>
 
-## What is Hyperfy?
+## What is MemexCorp?
 
-Hyperfy is an open-source framework for building interactive 3D virtual worlds. It combines a powerful physics engine, networked real-time collaboration, and a component-based application system to create immersive experiences that can be self-hosted or connected to the wider Hyperfy ecosystem.
+MemexCorp is an open-source framework for building interactive 3D virtual worlds. It combines a powerful physics engine, networked real-time collaboration, and a component-based application system to create immersive experiences that can be self-hosted or connected to the wider MemexCorp ecosystem.
 
 ## 🧬 Key Features
 
@@ -21,7 +21,7 @@ Hyperfy is an open-source framework for building interactive 3D virtual worlds. 
 - **WebXR support** - Experience worlds in VR
 - **Extensible architecture** - Highly customizable for various use cases
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/hyperfy-xyz/hyperfy)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/memexcorp/memexcorp)
 
 ## 🚀 Quick Start
 
@@ -33,7 +33,7 @@ Hyperfy is an open-source framework for building interactive 3D virtual worlds. 
 
 ```bash
 # Clone the repository
-git clone https://github.com/hyperfy-xyz/hyperfy.git my-world
+git clone https://github.com/memexcorp/memexcorp.git my-world
 cd my-world
 
 # Copy example environment settings
@@ -61,10 +61,10 @@ For containerized deployment, check [DOCKER.md](DOCKER.md) for detailed instruct
 
 ## 📚 Documentation & Resources
 
-- **[Community Documentation](https://docs.hyperfy.xyz)** - Comprehensive guides and reference
-- **[Website](https://hyperfy.io/)** - Official Hyperfy website
-- **[Sandbox](https://play.hyperfy.xyz/)** - Try Hyperfy in your browser
-- **[Twitter/X](https://x.com/hyperfy_io)** - Latest updates and announcements
+- **[Community Documentation](https://docs.memexcorp.xyz)** - Comprehensive guides and reference
+- **[Website](https://memexcorp.io/)** - Official MemexCorp website
+- **[Sandbox](https://play.memexcorp.xyz/)** - Try MemexCorp in your browser
+- **[Twitter/X](https://x.com/memexcorp_io)** - Latest updates and announcements
 
 ## 📏 Project Structure
 
@@ -115,6 +115,6 @@ Contributions are welcome! Please check out our [contributing guidelines](CONTRI
 
 ## 🌱 Project Status
 
-This project is still in alpha as we transition all of our [reference platform](https://github.com/hyperfy-xyz/hyperfy-ref) code into fully self hostable worlds.
+This project is still in alpha as we transition all of our [reference platform](https://github.com/memexcorp/memexcorp-ref) code into fully self hostable worlds.
 Most features are already here in this repo but still need to be connected up to work with self hosting in mind.
 Note that APIs are highly likely to change during this time.

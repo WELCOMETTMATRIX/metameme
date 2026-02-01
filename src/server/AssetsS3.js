@@ -92,7 +92,7 @@ export class AssetsS3 {
 
       // Detect if this is AWS S3 or a custom endpoint
       if (host.includes('.amazonaws.com')) {
-        // Example: play.hyperfy.xyz.s3.eu-west-1.amazonaws.com
+        // Example: play.memexcorp.xyz.s3.eu-west-1.amazonaws.com
         const hostParts = host.split('.')
 
         const s3Index = hostParts.indexOf('s3')
