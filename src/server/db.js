@@ -328,17 +328,23 @@ const migrations = [
       const rootDir = path.join(__dirname, '../')
       const scenePath = path.join(rootDir, 'src/world/scene.hyp')
       const buffer = await fs.readFile(scenePath)
-      const file = new File([buffer], 'scene.hyp', {
+      const file = {
+        arrayBuffer: async () => buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.length),
+        size: buffer.length,
         type: 'application/octet-stream',
-      })
+        name: 'scene.hyp',
+      }
       const app = await importApp(file)
       // upload the asset
       for (const asset of app.assets) {
         const filename = asset.url.split('asset://').pop()
         const buffer = Buffer.from(await asset.file.arrayBuffer())
-        const file = new File([buffer], filename, {
+        const file = {
+          arrayBuffer: async () => buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.length),
+          size: buffer.length,
           type: 'application/octet-stream',
-        })
+          name: filename,
+        }
         // const dest = path.join(worldDir, '/assets', filename)
         // await fs.writeFile(dest, buffer)
         await assets.upload(file)

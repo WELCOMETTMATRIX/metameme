@@ -35,9 +35,12 @@ class Collections {
       for (const appFilename of manifest.apps) {
         const appPath = path.join(folderPath, appFilename)
         const appBuffer = fs.readFileSync(appPath)
-        const appFile = new File([appBuffer], appFilename, {
+        const appFile = {
+          arrayBuffer: async () => appBuffer.buffer.slice(appBuffer.byteOffset, appBuffer.byteOffset + appBuffer.length),
+          size: appBuffer.length,
           type: 'application/octet-stream',
-        })
+          name: appFilename,
+        }
         const app = await importApp(appFile)
         for (const asset of app.assets) {
           // const file = asset.file

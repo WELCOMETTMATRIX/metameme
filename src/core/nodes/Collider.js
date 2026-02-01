@@ -60,7 +60,11 @@ export class Collider extends Node {
       pmesh = geometryToPxMesh(this.ctx.world, this._geometry, isConvex)
       if (!pmesh) return console.error('failed to generate collider pmesh')
       this.matrixWorld.decompose(_v1, _q1, _v2)
-      const scale = new PHYSX.PxMeshScale(new PHYSX.PxVec3(_v2.x, _v2.y, _v2.z), new PHYSX.PxQuat(0, 0, 0, 1))
+      // If the mesh was baked (scaled down) for cooking, compensate by applying
+      // the inverse bake scale here so the runtime size matches the original geometry.
+      const bakeScale = pmesh?.item?.bakeScale || 1.0
+      const meshScaleVec = new PHYSX.PxVec3(_v2.x / bakeScale, _v2.y / bakeScale, _v2.z / bakeScale)
+      const scale = new PHYSX.PxMeshScale(meshScaleVec, new PHYSX.PxQuat(0, 0, 0, 1))
       if (isConvex) {
         geometry = new PHYSX.PxConvexMeshGeometry(pmesh.value, scale)
       } else {

@@ -95,9 +95,18 @@ export async function importApp(file) {
 
   for (const assetInfo of header.assets) {
     const data = buffer.slice(position, position + assetInfo.size)
-    const file = new File([data], assetInfo.url.split('/').pop(), {
-      type: assetInfo.mime,
-    })
+    let file
+    const name = assetInfo.url.split('/').pop()
+    if (typeof File !== 'undefined') {
+      file = new File([data], name, { type: assetInfo.mime })
+    } else {
+      file = {
+        arrayBuffer: async () => data,
+        size: data.byteLength,
+        type: assetInfo.mime,
+        name,
+      }
+    }
     assets.push({
       type: assetInfo.type,
       url: assetInfo.url,

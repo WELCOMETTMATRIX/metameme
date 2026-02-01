@@ -25,7 +25,21 @@ class PMeshHandle {
 }
 
 export function geometryToPxMesh(world, geometry, convex) {
-  const id = `${geometry.uuid}_${convex ? 'convex' : 'triangles'}`
+  // determine a bake scale to prevent extremely large meshes from causing
+  // triangle-size warnings in PhysX cooking. We scale the vertex positions
+  // down for cooking and compensate by applying the inverse scale when
+  // creating the runtime mesh geometry.
+  const bbox = geometry.boundingBox || (() => { geometry.computeBoundingBox(); return geometry.boundingBox })()
+  const size = new THREE.Vector3()
+  bbox.getSize(size)
+  const maxExtent = Math.max(size.x, size.y, size.z)
+  const TARGET_EXTENT = 1.0
+  const bakeScale = maxExtent > TARGET_EXTENT * 5 ? TARGET_EXTENT / maxExtent : 1.0
+  if (bakeScale !== 1.0) {
+    console.warn(`[geometryToPxMesh] auto-scaling large mesh ${geometry.uuid} by factor ${bakeScale.toFixed(4)} for PhysX cooking`) // eslint-disable-line no-console
+  }
+
+  const id = `${geometry.uuid}_${convex ? 'convex' : 'triangles'}_bs${bakeScale}`
 
   // check and return cached if already cooked
   let item = cache.get(id)
@@ -54,10 +68,15 @@ export function geometryToPxMesh(world, geometry, convex) {
   // console.log('position', position)
   // console.log('index', index)
 
+  // Apply bakeScale to positions sent to PhysX
   const positions = position.array
-  const floatBytes = positions.length * positions.BYTES_PER_ELEMENT
+  const scaledPositions = bakeScale === 1.0 ? positions : new Float32Array(positions.length)
+  if (bakeScale !== 1.0) {
+    for (let i = 0; i < positions.length; i++) scaledPositions[i] = positions[i] * bakeScale
+  }
+  const floatBytes = scaledPositions.length * scaledPositions.BYTES_PER_ELEMENT
   const pointsPtr = PHYSX._webidl_malloc(floatBytes)
-  PHYSX.HEAPF32.set(positions, pointsPtr >> 2)
+  PHYSX.HEAPF32.set(scaledPositions, pointsPtr >> 2)
 
   let desc
   let pmesh
@@ -126,7 +145,7 @@ export function geometryToPxMesh(world, geometry, convex) {
 
   if (!pmesh) return null
 
-  item = { id, pmesh, refs: 0 }
+  item = { id, pmesh, refs: 0, bakeScale }
   cache.set(id, item)
   return new PMeshHandle(item)
 }

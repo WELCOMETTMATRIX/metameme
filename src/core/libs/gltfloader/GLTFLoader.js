@@ -3303,10 +3303,33 @@ class GLTFParser {
 
 			sourceURI = parser.getDependency( 'bufferView', sourceDef.bufferView ).then( function ( bufferView ) {
 
-				isObjectURL = true;
-				const blob = new Blob( [ bufferView ], { type: sourceDef.mimeType } );
-				sourceURI = URL.createObjectURL( blob );
-				return sourceURI;
+				// Prefer createObjectURL when available in an actual browser. Avoid using
+				// createObjectURL when running inside Node.js or similar server envs where
+				// blob:nodedata URLs are produced but cannot be loaded by the texture loader.
+				const isNode = (typeof process !== 'undefined' && process.versions != null && process.versions.node != null);
+				if ( URL && typeof URL.createObjectURL === 'function' && !isNode ) {
+					isObjectURL = true;
+					const blob = new Blob( [ bufferView ], { type: sourceDef.mimeType } );
+					sourceURI = URL.createObjectURL( blob );
+					return sourceURI;
+				} else {
+					// Fallback: construct a data URL from the bufferView.
+					let base64;
+					if ( typeof Buffer !== 'undefined' ) {
+						base64 = Buffer.from( bufferView ).toString( 'base64' );
+					} else {
+						// Browser-friendly fallback (rare path)
+						let binary = '';
+						const bytes = new Uint8Array( bufferView );
+						const chunkSize = 0x8000; // avoid call stack limits
+						for ( let i = 0; i < bytes.length; i += chunkSize ) {
+							const chunk = bytes.subarray( i, i + chunkSize );
+							binary += String.fromCharCode.apply( null, chunk );
+						}
+						base64 = btoa( binary );
+					}
+					return 'data:' + ( sourceDef.mimeType || 'application/octet-stream' ) + ';base64,' + base64;
+				}
 
 			} );
 

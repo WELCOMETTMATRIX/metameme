@@ -83,7 +83,13 @@ export class ServerAI extends System {
     // console.log(code)
     console.log(`[ai] created in ${elapsed}s`)
     // convert new code to asset
-    const file = new File([code], 'script.js', { type: 'text/plain' })
+    const codeBuffer = Buffer.from(code)
+    const file = {
+      arrayBuffer: async () => codeBuffer.buffer.slice(codeBuffer.byteOffset, codeBuffer.byteOffset + codeBuffer.length),
+      size: codeBuffer.length,
+      type: 'text/plain',
+      name: 'script.js',
+    }
     const fileContent = await file.arrayBuffer()
     const hash = await hashFile(Buffer.from(fileContent))
     const filename = `${hash}.js`
@@ -119,7 +125,13 @@ export class ServerAI extends System {
     const elapsed = (performance.now() - startAt) / 1000
     console.log(`[ai] edited in ${elapsed}s`)
     // convert new code to asset
-    const file = new File([newCode], 'script.js', { type: 'text/plain' })
+    const newCodeBuffer = Buffer.from(newCode)
+    const file = {
+      arrayBuffer: async () => newCodeBuffer.buffer.slice(newCodeBuffer.byteOffset, newCodeBuffer.byteOffset + newCodeBuffer.length),
+      size: newCodeBuffer.length,
+      type: 'text/plain',
+      name: 'script.js',
+    }
     const fileContent = await file.arrayBuffer()
     const hash = await hashFile(Buffer.from(fileContent))
     const filename = `${hash}.js`
@@ -154,7 +166,13 @@ export class ServerAI extends System {
     const elapsed = (performance.now() - startAt) / 1000
     console.log(`[ai] fixed in ${elapsed}s`)
     // convert new code to asset
-    const file = new File([newCode], 'script.js', { type: 'text/plain' })
+    const newCodeBuffer = Buffer.from(newCode)
+    const file = {
+      arrayBuffer: async () => newCodeBuffer.buffer.slice(newCodeBuffer.byteOffset, newCodeBuffer.byteOffset + newCodeBuffer.length),
+      size: newCodeBuffer.length,
+      type: 'text/plain',
+      name: 'script.js',
+    }
     const fileContent = await file.arrayBuffer() // or file.text() for string
     const hash = await hashFile(Buffer.from(fileContent))
     const filename = `${hash}.js`

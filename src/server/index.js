@@ -159,10 +159,13 @@ fastify.post('/api/upload', async (req, reply) => {
     chunks.push(chunk)
   }
   const buffer = Buffer.concat(chunks)
-  // convert to file
-  const file = new File([buffer], mp.filename, {
+  // convert to file-like object (Node)
+  const file = {
+    arrayBuffer: async () => buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.length),
+    size: buffer.length,
     type: mp.mimetype || 'application/octet-stream',
-  })
+    name: mp.filename,
+  }
   // upload
   await assets.upload(file)
 })
