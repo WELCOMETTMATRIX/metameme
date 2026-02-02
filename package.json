@@ -18,9 +18,12 @@
     "real-time"
   ],
   "scripts": {
-    "dev": "node scripts/build.mjs --dev",
-    "build": "node scripts/build.mjs",
-    "start": "node build/index.js",
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "legacy:dev": "node scripts/build.mjs --dev",
+    "legacy:build": "node scripts/build.mjs",
+    "legacy:start": "node build/index.js",
     "world:backup": "node scripts/backup-world.mjs",
     "viewer:dev": "node scripts/build-viewer.mjs --dev",
     "viewer:build": "node scripts/build-viewer.mjs",
@@ -28,7 +31,7 @@
     "client:build": "node scripts/build-client.mjs",
     "node-client:dev": "node scripts/build-node-client.mjs --dev",
     "node-client:build": "node scripts/build-node-client.mjs",
-    "lint": "eslint . --ext .js,.jsx",
+    "lint": "next lint",
     "lint:fix": "eslint . --ext .js,.jsx --fix",
     "format": "prettier --write .",
     "check": "npm run lint && npm run format"
@@ -71,6 +74,7 @@
     "react-dom": "^19.1.0",
     "ses": "^1.10.0",
     "source-map-support": "^0.5.21",
+    "tailwindcss": "^4.1.18",
     "three": "^0.173.0",
     "three-mesh-bvh": "^0.8.3",
     "yoga-layout": "^3.2.1"
@@ -87,7 +91,7 @@
   },
   "engines": {
     "npm": ">=10.0.0",
-    "node": "22.11.0"
+    "node": ">=20.0.0"
   },
   "overrides": {
     "three": "^0.173.0"
