@@ -484,7 +484,7 @@ export class ClientControls extends System {
       if (actions) {
         for (const action of actions) {
           // ignore if already existing
-          if (!action.type === 'custom') {
+          if (action.type !== 'custom') {
             const idx = this.actions.findIndex(a => a.type === action.type)
             if (idx !== -1) continue
           }
@@ -532,7 +532,7 @@ export class ClientControls extends System {
           const capture = button.onPress?.()
           if (capture || button.capture) break
         }
-        const capture = control.onButtonPress?.(prop, text)
+        const capture = control.onButtonPress?.(prop, null)
         if (capture) break
       }
     } else {
