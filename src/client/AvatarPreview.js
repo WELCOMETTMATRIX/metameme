@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { isString } from 'lodash'
+import { isString } from 'lodash-es'
 import { Emotes } from '../core/extras/playerEmotes'
 
 const MAX_UPLOAD_SIZE = 1000000000000 // TODO

@@ -26,6 +26,7 @@ export async function getDB({ worldDir }) {
         await db.raw(`CREATE SCHEMA IF NOT EXISTS ??`, [schema])
       }
     } else {
+      // Use better-sqlite3 for local SQLite database
       db = Knex({
         client: 'better-sqlite3',
         connection: {
