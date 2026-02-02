@@ -26,14 +26,10 @@ export async function getDB({ worldDir }) {
         await db.raw(`CREATE SCHEMA IF NOT EXISTS ??`, [schema])
       }
     } else {
-      // Use better-sqlite3 for local SQLite database
-      db = Knex({
-        client: 'better-sqlite3',
-        connection: {
-          filename: path.join(worldDir, '/db.sqlite'),
-        },
-        useNullAsDefault: true,
-      })
+      // No database available - running in viewer-only mode
+      console.warn('[db] No DB_URI configured. Running in viewer-only mode without database.')
+      db = null
+      return null
     }
     await migrate(db)
   }
